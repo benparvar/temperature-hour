@@ -9,7 +9,7 @@
 LiquidCrystal_I2C LCD = LiquidCrystal_I2C(0x27, 18, 4);
 
 #define NTP_SERVER     "pool.ntp.org"
-#define UTC_OFFSET     -3 * 3600
+#define UTC_OFFSET     -3 * 3600 // GMT -3
 #define UTC_OFFSET_DST 0
 
 void spinner() {
@@ -57,7 +57,7 @@ void setup() {
   LCD.setCursor(0, 0);
   LCD.print("Connecting to WiFi");
 
-  WiFi.begin("Go_To_Hell", "4a5l8a6n1", 6);
+  WiFi.begin("user", "pwd", 6);
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);
     spinner();
