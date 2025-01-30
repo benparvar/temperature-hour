@@ -49,23 +49,8 @@ void connectToWifi() {
   Serial.println(WiFi.localIP());
 
   LCD.clear();
-  printOnline();
   LCD.setCursor(0, 0);
   LCD.print("Updating time...  ");
-}
-
-void printOnline() {
-  Serial.println("printOnline");
-
-  LCD.setCursor(0, 3);
-  LCD.print("Online");
-}
-
-void printOffLine() {
-  Serial.println("printOffLine");
-
-  LCD.setCursor(0, 3);
-  LCD.print("Offline");
 }
 
 void printLocalTime() {
@@ -73,14 +58,22 @@ void printLocalTime() {
 
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
-    printOffLine();
     return;
   }
 
   LCD.setCursor(0, 0);
   LCD.print(&timeinfo, "%d/%m/%Y  %H:%M:%S");
+}
 
-  printOnline();
+void printAltitude() {
+  if (isSensorAvailable) {
+    Serial.println("printAltitude");
+  
+    LCD.setCursor(0, 3);
+    LCD.print("Alt: ");
+    LCD.print(BMP.readAltitude());
+    LCD.print(" Mt");
+  }
 }
 
 void printPressure() {
@@ -101,7 +94,7 @@ void printTemperature() {
     LCD.setCursor(0, 1);
     LCD.print("Temp: ");
     LCD.print(BMP.readTemperature());
-    LCD.print(" C");
+    LCD.print(" *C");
   }
 }
 
@@ -134,5 +127,6 @@ void loop() {
   printLocalTime();
   printTemperature();
   printPressure();
+  printAltitude();
   delay(500);
 }
