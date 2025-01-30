@@ -1,8 +1,7 @@
 #include <WiFi.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-
-LiquidCrystal_I2C LCD = LiquidCrystal_I2C(0x27, 18, 4);
+#include <Adafruit_BMP085.h>
 
 #define NTP_SERVER     "pool.ntp.org"
 #define UTC_OFFSET     -3 * 3600 // GMT -3
@@ -10,6 +9,17 @@ LiquidCrystal_I2C LCD = LiquidCrystal_I2C(0x27, 18, 4);
 
 #define WIFI_USERNAME "IoT"
 #define WIFI_PASSWORD "NcC-1701"
+
+#define I2C_FREQ 400000
+
+#define SDA_LCD 21
+#define SCL_LCD 22
+#define SDA_SENSOR 33
+#define SCL_SENSOR 32
+
+LiquidCrystal_I2C LCD = LiquidCrystal_I2C(0x27, 18, 4); // LCD Display
+Adafruit_BMP085 BMP; // Sensor
+bool isSensorAvailable = false;
 
 void spinner() {
   static int8_t counter = 0;
@@ -73,19 +83,49 @@ void printLocalTime() {
   printOnline();
 }
 
+void printPressure() {
+  if (isSensorAvailable) {
+    Serial.println("printPressure");
+  
+    LCD.setCursor(0, 2);
+    LCD.print("Pres: ");
+    LCD.print(BMP.readPressure());
+    LCD.print(" Pa");
+  }
+}
+
 void printTemperature() {
- Serial.println("printTemperature");
+  if (isSensorAvailable) {
+    Serial.println("printTemperature");
+  
+    LCD.setCursor(0, 1);
+    LCD.print("Temp: ");
+    LCD.print(BMP.readTemperature());
+    LCD.print(" C");
+  }
 }
 
 void setup() {
   Serial.begin(115200);
-
   Serial.println("setup");
 
+  // Configure Wire
+  Wire.begin();
+  Wire1.begin(SDA_SENSOR, SCL_SENSOR);
+
+  // Configure LCD
   LCD.init();
   LCD.backlight();
 
+  // Configure wifi
   connectToWifi();
+
+
+  // Configure Sensor
+  isSensorAvailable = BMP.begin(0x76, &Wire1);
+  if (!isSensorAvailable) {
+    Serial.println("BMP sensor fail...");
+  }
 
   configTime(UTC_OFFSET, UTC_OFFSET_DST, NTP_SERVER);
 }
@@ -93,5 +133,6 @@ void setup() {
 void loop() {
   printLocalTime();
   printTemperature();
-  delay(250);
+  printPressure();
+  delay(500);
 }
