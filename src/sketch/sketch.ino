@@ -70,9 +70,8 @@ void printAltitude() {
     Serial.println("printAltitude");
   
     LCD.setCursor(0, 3);
-    LCD.print("Alt: ");
+    LCD.print("Alt  (mt): ");
     LCD.print(BMP.readAltitude());
-    LCD.print(" MT");
   }
 }
 
@@ -81,9 +80,8 @@ void printPressure() {
     Serial.println("printPressure");
   
     LCD.setCursor(0, 2);
-    LCD.print("Pres: ");
+    LCD.print("Pres (Pa): ");
     LCD.print(BMP.readPressure());
-    LCD.print(" PA");
   }
 }
 
@@ -92,10 +90,10 @@ void printTemperature() {
     Serial.println("printTemperature");
   
     LCD.setCursor(0, 1);
-    LCD.print("Temp: ");
-    LCD.print(BMP.readTemperature());
+    LCD.print("Temp (");
     LCD.print((char) 223);
-    LCD.print("C");
+    LCD.print("C): ");
+    LCD.print(BMP.readTemperature());
   }
 }
 
