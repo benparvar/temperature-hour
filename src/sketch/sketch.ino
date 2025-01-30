@@ -72,7 +72,7 @@ void printAltitude() {
     LCD.setCursor(0, 3);
     LCD.print("Alt: ");
     LCD.print(BMP.readAltitude());
-    LCD.print(" Mt");
+    LCD.print(" MT");
   }
 }
 
@@ -83,7 +83,7 @@ void printPressure() {
     LCD.setCursor(0, 2);
     LCD.print("Pres: ");
     LCD.print(BMP.readPressure());
-    LCD.print(" Pa");
+    LCD.print(" PA");
   }
 }
 
@@ -94,7 +94,8 @@ void printTemperature() {
     LCD.setCursor(0, 1);
     LCD.print("Temp: ");
     LCD.print(BMP.readTemperature());
-    LCD.print(" *C");
+    LCD.print((char) 223);
+    LCD.print("C");
   }
 }
 
