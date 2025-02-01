@@ -17,6 +17,8 @@
 #define SDA_SENSOR 33
 #define SCL_SENSOR 32
 
+// Use ESP32-WROOM-DA
+
 LiquidCrystal_I2C LCD = LiquidCrystal_I2C(0x27, 18, 4); // LCD Display
 Adafruit_BMP085 BMP; // Sensor
 bool isSensorAvailable = false;
