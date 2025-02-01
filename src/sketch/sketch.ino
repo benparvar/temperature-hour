@@ -68,32 +68,33 @@ void printLocalTime() {
 void printAltitude() {
   if (isSensorAvailable) {
     Serial.println("printAltitude");
+    char buff[24];
   
     LCD.setCursor(0, 3);
-    LCD.print("Alt  (mt): ");
-    LCD.print(BMP.readAltitude());
+    sprintf(buff, "%17.2f Mt", BMP.readAltitude());
+    LCD.print(buff);
   }
 }
 
 void printPressure() {
   if (isSensorAvailable) {
     Serial.println("printPressure");
+    char buff[24];
   
     LCD.setCursor(0, 2);
-    LCD.print("Pres (Pa): ");
-    LCD.print(BMP.readPressure());
+    sprintf(buff, "%17d Pa", BMP.readPressure());
+    LCD.print(buff);
   }
 }
 
 void printTemperature() {
   if (isSensorAvailable) {
     Serial.println("printTemperature");
+    char buff[24];
   
     LCD.setCursor(0, 1);
-    LCD.print("Temp (");
-    LCD.print((char) 223);
-    LCD.print("C): ");
-    LCD.print(BMP.readTemperature());
+    sprintf(buff, "%17.2 f%cC", BMP.readTemperature(), 223);
+    LCD.print(buff);
   }
 }
 
